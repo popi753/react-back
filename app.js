@@ -7,7 +7,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 const mongoose = require('mongoose');
+const session = require('express-session')
 
 mongoose.set('strictQuery', true)
 
@@ -29,7 +31,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use(session({
+  secret: 'auth',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {secure: false}}))
 
 app.use((req, res, next)=>{
   res.header('Access-Control-Allow-Origin', "*"),
@@ -38,6 +44,7 @@ app.use((req, res, next)=>{
 next()
 }
 )
+
 
 
 app.use('/', indexRouter);

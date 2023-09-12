@@ -9,13 +9,18 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const mongoose = require('mongoose');
-const session = require('express-session')
+const cors = require('cors');
+// const session = require('express-session');
 
 mongoose.set('strictQuery', true)
 
 mongoose.connect(process.env.database,
 console.log('connected to mongodb'))
 
+const allowedOrigins = [
+  'http://127.0.0.1:5500',
+  'http://localhost:3000'
+];
 
 var indexRouter = require('./routes/index');
 
@@ -31,20 +36,31 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-  secret: 'auth',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {secure: false}}))
+// app.use(session({
+//   secret: 'auth',
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {secure: false}}))
 
 app.use((req, res, next)=>{
-  res.header('Access-Control-Allow-Origin', "*"),
-  // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE'),
+  res.header('Access-Control-Allow-Origin', true),
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE'),
   res.header('Access-Control-Allow-Headers', 'Content-Type'),
+  res.header('Access-Control-Allow-Credentials', true),
 next()
 }
 )
 
+app.use(cors({
+  origin: (origin, callback) => {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+          callback(null, true)
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  optionsSuccessStatus: 200
+}));
 
 
 app.use('/', indexRouter);

@@ -10,7 +10,7 @@ var logger = require('morgan');
 
 const mongoose = require('mongoose');
 const cors = require('cors');
-// const session = require('express-session');
+
 
 mongoose.set('strictQuery', true)
 
@@ -18,11 +18,12 @@ mongoose.connect(process.env.database,
 console.log('connected to mongodb'))
 
 const allowedOrigins = [
-  'http://127.0.0.1:5500',
-  'http://localhost:3000'
+  process.env.allowedOrigins
 ];
 
 var indexRouter = require('./routes/index');
+var sportsRouter = require('./routes/sport');
+
 
 var app = express();
 
@@ -36,11 +37,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use(session({
-//   secret: 'auth',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: {secure: false}}))
+
 
 app.use((req, res, next)=>{
   res.header('Access-Control-Allow-Origin', true),
@@ -64,6 +61,7 @@ app.use(cors({
 
 
 app.use('/', indexRouter);
+app.use("/sport", sportsRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

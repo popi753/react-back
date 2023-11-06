@@ -3,26 +3,15 @@ var router = express.Router();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+const User = require("../schema")
 
-const mycolect = mongoose.model("mycolect", userSchema);
 
 router.get("/", (req, res) => {
   res.render("index.ejs");
 });
 
 router.post("/register", (req, res) => {
-  const user = new mycolect({
+  const user = new User({
     username: req.body.username,
     password: req.body.password,
   });
@@ -41,7 +30,7 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  mycolect
+  User
     .findOne({ username: req.body.username })
     .then((data) => {
       !data
@@ -54,18 +43,22 @@ router.post("/login", (req, res) => {
       res.json([data.username, token]);
       console.log("logged in");
     })
-    .catch((err) => res.send(err));
+    .catch((err) => console.error(err));
 });
 
 router.post("/validate", (req, res) => {
   console.log(req.headers.authorization);
   const result = jwt.verify(req.headers.authorization, "auth");
-  console.log(result);
-  res.json(result);
+  User
+  .findOne({ username: result })
+  .then(data=>res.json(data.username))
+  .catch(err=>console.error(err))
+
+
 });
 
 router.get("/users", (req, res) => {
-  mycolect
+  User
     .find({})
     .then((data) => res.send(data))
     .catch((err) => {

@@ -20,7 +20,7 @@ router.post("/register", (req, res) => {
     .save()
     .then((saved) => {
       const token = jwt.sign(saved.username, "auth");
-      res.json([saved.username, token]);
+      res.status(200).json([saved.username, token]);
       console.log("saved");
     })
     .catch((err) => {

@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
       type:Array,
       required:false,
     },
+    time:{
+      type:Date,
+      required:false,
+    }
   });
   
   const mycolect = mongoose.model("mycolect", userSchema);

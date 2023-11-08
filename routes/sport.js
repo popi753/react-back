@@ -15,7 +15,6 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../schema")
 
-// console.log(jwt.verify("eyJhbGciOiJIUzI1NiJ9.YWRzZmRhc2ZhZHNm.GWCW2-AjOixA01bb-yulwDHM1IxI1vyaFgB_s17feU4", "auth"))
                         
 
 const teamsSchema = new mongoose.Schema({
@@ -45,7 +44,7 @@ router.get("/getteams", (req,res)=>{
 router.post("/saveucl", async (req, res) => {
     const result = await jwt.verify(req.headers.authorization, "auth");
     console.log(result)
-    User.findOneAndUpdate({username:result},{teams:req.body})
+    User.findOneAndUpdate({username:result},{teams:req.body,time:Date()})
     .then(res=>console.log(res))
     .catch(err=>{console.error(err)
                  res.send(err)})

@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use((req, res, next)=>{
-  res.header('Access-Control-Allow-Origin', "*"),
+  res.header('Access-Control-Allow-Origin', "https://react-back-3gvb.onrender.com"),
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE'),
   res.header('Access-Control-Allow-Headers', 'Content-Type'),
   res.header('Access-Control-Allow-Credentials', true),

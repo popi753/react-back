@@ -39,25 +39,33 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-app.use((req, res, next)=>{
-  res.header('Access-Control-Allow-Origin', "*"),
-  res.header('Access-Control-Allow-Methods', '*'),
-  res.header('Access-Control-Allow-Headers', '*'),
-  res.header('Access-Control-Allow-Credentials', true),
-next()
-}
-)
+// app.use((req, res, next)=>{
+//   res.header('Access-Control-Allow-Origin', "*"),
+//   res.header('Access-Control-Allow-Methods', '*'),
+//   res.header('Access-Control-Allow-Headers', '*'),
+//   res.header('Access-Control-Allow-Credentials', true),
+// next()
+// }
+// )
 
-app.use(cors({
-  origin: (origin, callback) => {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-          callback(null, true)
-      } else {
-          callback(new Error('Not allowed by CORS'));
-      }
-  },
-  optionsSuccessStatus: 200
-}));
+// app.use(cors({
+//   origin: (origin, callback) => {
+//       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+//           callback(null, true)
+//       } else {
+//           callback(new Error('Not allowed by CORS'));
+//       }
+//   },
+//   optionsSuccessStatus: 200
+// }));
+
+app.use(cors(
+  {
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  }))
 
 
 app.use('/', indexRouter);

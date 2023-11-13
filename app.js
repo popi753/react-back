@@ -17,7 +17,7 @@ mongoose.set('strictQuery', true)
 mongoose.connect(process.env.database,
 console.log('connected to mongodb'))
 
-const allowedOrigins = [
+const AllowedOrigins = [
   process.env.allowedOrigins
 ];
 
@@ -61,7 +61,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors(
   {
-    origin: "*",
+    origin: AllowedOrigins[0],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
     preflightContinue: false,

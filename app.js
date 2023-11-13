@@ -61,10 +61,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors(
   {
-    origin: "*",
+    origin: allowedOrigins,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
     preflightContinue: false,
-    optionsSuccessStatus: 204
+    optionsSuccessStatus: 200
   }))
 
 
